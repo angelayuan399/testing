@@ -81,11 +81,6 @@ function updateSeries(data) {
   );
 }
 
-const svg = d3.select("#regionalChart");
-const width = +svg.attr("width");
-const height = +svg.attr("height");
-const margin = { top: 40, right: 160, bottom: 60, left: 80 };
-
 // Load CSV
 d3.csv("data/us_regional_future.csv", d3.autoType).then(data => {
   // Scales
