@@ -6,375 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>US Temperature Increase Visualization | CMIP6 Climate Data</title>
     <script src="https://d3js.org/d3.v7.min.js"></script>
-<<<<<<< HEAD
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #7e22ce 100%);
-            padding: 20px;
-            min-height: 100vh;
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
-            overflow: hidden;
-        }
-
-        header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 40px 30px;
-            text-align: center;
-        }
-
-        header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
-        }
-
-        .subtitle {
-            font-size: 1.2em;
-            opacity: 0.9;
-        }
-
-        main {
-            padding: 30px;
-        }
-
-        .visualization-container {
-            background: #f8fafc;
-            border-radius: 12px;
-            padding: 30px;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-        }
-
-        #map-container {
-            position: relative;
-            width: 100%;
-            margin-bottom: 30px;
-        }
-
-        svg {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
-
-        .controls {
-            margin-top: 30px;
-            padding: 20px;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        }
-
-        .slider-container {
-            margin-bottom: 20px;
-        }
-
-        .slider-container label {
-            display: block;
-            margin-bottom: 10px;
-            font-size: 1.1em;
-            color: #2d3748;
-        }
-
-        #current-year {
-            color: #667eea;
-            font-size: 1.3em;
-            font-weight: bold;
-        }
-
-        #year-slider {
-            width: 100%;
-            height: 8px;
-            border-radius: 4px;
-            background: linear-gradient(to right, #FFFFCC, #FD8D3C, #BD0026);
-            outline: none;
-            -webkit-appearance: none;
-            margin: 15px 0;
-        }
-
-        #year-slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            background: #667eea;
-            cursor: pointer;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-            transition: transform 0.2s;
-        }
-
-        #year-slider::-webkit-slider-thumb:hover {
-            transform: scale(1.2);
-        }
-
-        #year-slider::-moz-range-thumb {
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            background: #667eea;
-            cursor: pointer;
-            border: none;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-        }
-
-        .year-labels {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.9em;
-            color: #718096;
-            margin-top: 5px;
-        }
-
-        .play-btn {
-            width: 100%;
-            padding: 15px 30px;
-            font-size: 1.1em;
-            font-weight: bold;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
-        }
-
-        .play-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(102, 126, 234, 0.5);
-        }
-
-        .play-btn:active {
-            transform: translateY(0);
-        }
-
-        .legend {
-            margin-top: 30px;
-            text-align: center;
-        }
-
-        .legend h3 {
-            margin-bottom: 15px;
-            color: #2d3748;
-        }
-
-        .chart-container {
-            background: #f8fafc;
-            border-radius: 12px;
-            padding: 30px;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-        }
-
-        .chart-container h2 {
-            color: #2d3748;
-            margin-bottom: 10px;
-        }
-
-        .chart-subtitle {
-            color: #718096;
-            font-style: italic;
-            margin-bottom: 20px;
-        }
-
-        .info-panel {
-            background: linear-gradient(135deg, #edf2f7 0%, #e2e8f0 100%);
-            padding: 30px;
-            border-radius: 12px;
-            margin: 0 30px 30px 30px;
-            border-left: 5px solid #667eea;
-        }
-
-        .info-panel h3 {
-            color: #2d3748;
-            margin-bottom: 20px;
-            font-size: 1.5em;
-        }
-
-        #findings-list {
-            list-style: none;
-            padding: 0;
-        }
-
-        #findings-list li {
-            padding: 12px 0;
-            border-bottom: 1px solid #cbd5e0;
-            color: #4a5568;
-            font-size: 1.05em;
-        }
-
-        #findings-list li:last-child {
-            border-bottom: none;
-        }
-
-        #findings-list strong {
-            color: #2d3748;
-        }
-
-        .note {
-            margin-top: 20px;
-            padding: 15px;
-            background: white;
-            border-radius: 8px;
-            color: #4a5568;
-            font-style: italic;
-            line-height: 1.6;
-        }
-
-        footer {
-            background: #2d3748;
-            color: white;
-            padding: 25px;
-            text-align: center;
-        }
-
-        footer p {
-            margin: 8px 0;
-            font-size: 0.95em;
-        }
-
-        /* Tooltip */
-        #tooltip {
-            position: absolute;
-            background: rgba(0, 0, 0, 0.9);
-            color: white;
-            padding: 12px 16px;
-            border-radius: 8px;
-            pointer-events: none;
-            opacity: 0;
-            transition: opacity 0.3s;
-            font-size: 14px;
-            line-height: 1.6;
-            z-index: 1000;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-        }
-
-        #tooltip.visible {
-            opacity: 1;
-        }
-
-        /* D3 Styling */
-        .temp-cell {
-            transition: opacity 0.3s;
-        }
-
-        .temp-cell:hover {
-            opacity: 0.8;
-        }
-
-        .grid line {
-            stroke: #e2e8f0;
-            stroke-opacity: 0.7;
-        }
-
-        .grid path {
-            stroke-width: 0;
-        }
-
-        .axis-label {
-            font-weight: bold;
-            fill: #2d3748;
-        }
-
-        .threshold-line {
-            stroke: #ef4444;
-            stroke-width: 2;
-            stroke-dasharray: 5, 5;
-            opacity: 0.6;
-        }
-
-        .threshold-label {
-            fill: #ef4444;
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-        .region-line, .heat-line {
-            fill: none;
-            stroke-width: 3;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .region-line.highlighted, .heat-line.highlighted {
-            stroke-width: 5;
-            filter: drop-shadow(0 0 8px currentColor);
-        }
-
-        .region-line.dimmed, .heat-line.dimmed {
-            opacity: 0.2;
-            stroke-width: 2;
-        }
-
-        .region-line.user-highlighted, .heat-line.user-highlighted {
-            opacity: 1 !important;
-            stroke-width: 5 !important;
-        }
-
-        .region-label {
-            font-size: 13px;
-            font-weight: 600;
-        }
-
-        .region-boundary {
-            transition: all 0.3s;
-        }
-
-        .year-marker {
-            stroke: #667eea;
-            stroke-width: 3;
-            stroke-dasharray: 5, 5;
-            pointer-events: none;
-        }
-
-        .bar {
-            transition: all 0.3s;
-        }
-
-        @media (max-width: 768px) {
-            header h1 {
-                font-size: 1.8em;
-            }
-            
-            .subtitle {
-                font-size: 1em;
-            }
-            
-            main {
-                padding: 20px;
-            }
-            
-            .visualization-container,
-            .chart-container {
-                padding: 20px;
-            }
-        }
-    </style>
-=======
     <link rel="stylesheet" href="styles.css">
 
     <!-- <script src="script.js" type="module"></script> -->
     <script src="main.js" type="module"></script>
-<<<<<<< Updated upstream
-=======
->>>>>>> b7a98ac0c663093a0874028344cff17f863ca5de
->>>>>>> Stashed changes
 </head>
 
 <body>
@@ -382,21 +17,15 @@
     <div class="container">
         <!-- Header -->
         <header>
-<<<<<<< HEAD
             <h1>🌡️ US Temperature Increase by Region (2025-2100)</h1>
-            <p class="subtitle">Comprehensive analysis of projected warming under high emissions scenario (SSP5-8.5)</p>
-=======
-            <h1>US Temperature Increase by Region (2025-2100)</h1>
             <p class="authors">Justin Lee, Andrew Kim, Angela Yuan, Victor Chen</p>
             <p class="subtitle">Projected warming under high emissions scenario (SSP5-8.5)</p>
->>>>>>> b7a98ac0c663093a0874028344cff17f863ca5de
         </header>
 
         <!-- Main Content -->
         <main>
             <!-- Temperature Map -->
             <div class="visualization-container">
-                <h2 style="color: #2d3748; margin-bottom: 20px;">Geographic Temperature Distribution</h2>
                 <div id="map-container">
                     <svg id="temperature-map"></svg>
                 </div>
@@ -421,7 +50,7 @@
 
                 <!-- Legend -->
                 <div class="legend">
-                    <h3>Temperature Increase (°C above 2025 baseline)</h3>
+                    <h3>Temperature Increase (°C)</h3>
                     <svg id="legend-svg"></svg>
                 </div>
             </div>
@@ -429,17 +58,10 @@
             <!-- Time Series Chart -->
             <div class="chart-container">
                 <h2>Regional Temperature Evolution</h2>
-                <p class="chart-subtitle">Click on regions in the map or lines in the chart to highlight specific trajectories</p>
+                <p class="chart-subtitle">Click on the map to highlight a region's trajectory</p>
                 <svg id="time-series"></svg>
             </div>
 
-<<<<<<< Updated upstream
-=======
-<<<<<<< HEAD
-            <!-- Additional charts will be inserted here by main.js -->
-
-=======
->>>>>>> Stashed changes
             <div class="chart-container">
                 <h2>Regional Warming Evolution</h2>
                 <p class="chart-subtitle">Projected July average temperature (°C) under SSP5-8.5</p>
@@ -452,31 +74,30 @@
                 </p>
                 <svg id="scenario-dumbbell-plot"></svg>
             </div>
-<<<<<<< Updated upstream
-=======
->>>>>>> b7a98ac0c663093a0874028344cff17f863ca5de
->>>>>>> Stashed changes
+
+            <div class="chart-container">
+                <h2>Projected July Temperature Increase by US Region, 2025-2100</h2>
+                <p class="chart-subtitle">Comparing temperature projections across US regions for two distinct emission scenarios.
+                </p>
+                <svg id="anomaly-charts"></svg>
+            </div>
         </main>
 
         <!-- Info Panel -->
         <aside class="info-panel">
-            <h3>📊 Key Findings</h3>
+            <h3>Key Findings</h3>
             <ul id="findings-list">
-                <li><strong>Southwest Interior:</strong> Projected ~5.5°C (9.9°F) increase by 2100 - highest warming in the nation</li>
-                <li><strong>Great Plains:</strong> Projected ~5.0°C (9.0°F) increase by 2100 - accelerated continental warming</li>
-                <li><strong>Pacific Northwest:</strong> Projected ~4.0°C (7.2°F) increase by 2100 - moderate ocean influence</li>
-                <li><strong>Southeast Coast:</strong> Projected ~3.5°C (6.3°F) increase by 2100 - buffered by Atlantic waters</li>
-                <li><strong>Northeast Coast:</strong> Projected ~3.8°C (6.8°F) increase by 2100 - mixed continental-maritime effects</li>
-                <li><strong>US Average:</strong> Projected ~4.5°C (8.1°F) increase by 2100 under high emissions</li>
+                <li><strong>Southwest Interior:</strong> ~5.5°C increase by 2100</li>
+                <li><strong>Great Plains:</strong> ~5.0°C increase by 2100</li>
+                <li><strong>Pacific Northwest:</strong> ~4.0°C increase by 2100</li>
+                <li><strong>Coastal Regions:</strong> ~3.5°C increase by 2100</li>
+                <li><strong>US Average:</strong> ~4.5°C increase by 2100</li>
             </ul>
-            <div class="note">
-                <strong>Why these patterns?</strong> Interior regions experience more extreme warming due to the absence of ocean buffering effects. Coastal areas benefit from the ocean's heat capacity, which moderates temperature increases. The Southwest's arid climate amplifies warming through positive feedback loops involving soil moisture and vegetation loss.
-            </div>
+            <p class="note">Interior regions warm more than coastal areas due to ocean buffering effects.</p>
         </aside>
 
         <!-- Footer -->
         <footer>
-<<<<<<< Updated upstream
             <p><strong>Data Source:</strong> CMIP6 Climate Model Projections | <strong>Scenario:</strong> SSP5-8.5 (High
                 Emissions)</p>
             <p><strong>Baseline:</strong> 2025-2100 temperature increases across US regions</p>
@@ -1680,146 +1301,6 @@
             }, 1000);
         });
     </script>
-    <script src="https://d3js.org/d3.v7.min.js"></script>
-    <script>
-    d3.csv("data/cmip6_warming_levels_one_ens_1850_1900.csv").then(function(data) {
-
-        // Remove rows that are comments (start with #)
-        data = data.filter(d => d.model && d.model.substring(0, 1) !== "#");
-
-        // Convert numeric data
-        data.forEach(d => {
-        d.warming_level = +d.warming_level;
-        d.start_year = +d.start_year;
-        d.end_year = +d.end_year;
-        });
-
-        // Example: print the first row
-        console.log(data[0]);
-
-        // Ready to use data for chart!
-        // You can now proceed to call your plot function, e.g.
-        // plotWarmingTimeline(data);
-        // Define plot area
-        const margin = {top: 50, right: 240, bottom: 40, left: 60},
-            width = 900 - margin.left - margin.right,
-            height = 500 - margin.top - margin.bottom;
-
-        // Create SVG element
-        const svg = d3.select("body").append("svg")
-            .attr("width", width + margin.left + margin.right)
-            .attr("height", height + margin.top + margin.bottom);
-
-        const plotArea = svg.append("g")
-            .attr("transform", `translate(${margin.left},${margin.top})`);
-
-        // Extract scenarios and color scale
-        const scenarios = Array.from(new Set(data.map(d => d.exp)));
-        const color = d3.scaleOrdinal().domain(scenarios).range(d3.schemeCategory10);
-
-        // X/Y scales
-        const x = d3.scaleLinear()
-            .domain([d3.min(data, d => d.start_year), d3.max(data, d => d.start_year)])
-            .range([0, width]);
-
-        const y = d3.scaleLinear()
-            .domain([d3.min(data, d => d.warming_level), d3.max(data, d => d.warming_level)])
-            .range([height, 0]);
-
-        // Axes
-        plotArea.append("g")
-            .attr("transform", `translate(0,${height})`)
-            .call(d3.axisBottom(x).tickFormat(d3.format("d")));
-
-        plotArea.append("g")
-            .call(d3.axisLeft(y));
-
-        // Labels
-        plotArea.append("text")
-            .attr("x", width/2)
-            .attr("y", -20)
-            .attr("text-anchor", "middle")
-            .attr("font-size", "18px")
-            .attr("font-weight", "bold")
-            .text("CMIP6 Warming Level Timeline (By Scenario)");
-
-        plotArea.append("text")
-            .attr("x", width/2)
-            .attr("y", height+35)
-            .attr("text-anchor", "middle")
-            .text("Year Level Reached");
-
-        plotArea.append("text")
-            .attr("x", -50)
-            .attr("y", height/2)
-            .attr("transform", `rotate(-90,-50,${height/2})`)
-            .attr("text-anchor", "middle")
-            .text("Warming Level (°C)");
-
-        // Tooltip
-        const tooltip = d3.select("body").append("div")
-            .attr("class", "tooltip")
-            .style("position", "absolute")
-            .style("background", "#fff")
-            .style("border", "1px solid #aaa")
-            .style("padding", "8px")
-            .style("opacity", 0);
-
-        // Draw points
-        plotArea.selectAll("circle")
-            .data(data)
-            .enter()
-            .append("circle")
-            .attr("cx", d => x(d.start_year))
-            .attr("cy", d => y(d.warming_level))
-            .attr("r", 6)
-            .attr("fill", d => color(d.exp))
-            .attr("opacity", 0.7)
-            .on("mouseover", function(event, d) {
-                tooltip.transition().duration(200).style("opacity", 1);
-                tooltip.html(
-                `<strong>Model:</strong> ${d.model}<br/>
-                <strong>Scenario:</strong> ${d.exp}<br/>
-                <strong>Ensemble:</strong> ${d.ensemble}<br/>
-                <strong>Level:</strong> ${d.warming_level}°C<br/>
-                <strong>Years:</strong> ${d.start_year}-${d.end_year}`
-                )
-                .style("left", (event.pageX+15)+"px")
-                .style("top", (event.pageY-20)+"px");
-            })
-            .on("mouseout", function() {
-                tooltip.transition().duration(200).style("opacity", 0);
-            });
-
-        // Legend
-        const legend = svg.append("g")
-            .attr("transform", `translate(${width+margin.left+20},${margin.top})`);
-
-        legend.selectAll("rect")
-            .data(scenarios)
-            .enter()
-            .append("rect")
-            .attr("y", (d,i) => i*22)
-            .attr("width", 18).attr("height", 18)
-            .attr("fill", d => color(d));
-
-        legend.selectAll("text")
-            .data(scenarios)
-            .enter()
-            .append("text")
-            .attr("x", 25)
-            .attr("y", (d,i) => i*22 + 14)
-            .text(d => d);
-
-        legend.append("text")
-            .attr("y", -10)
-            .attr("font-size", "14px")
-            .attr("font-weight", "bold")
-            .text("Scenario");
-            });
-    </script>
-
-    
 </body>
 =======
             <p><strong>Data Source:</strong> CMIP6 Climate Model Projections | <strong>Scenario:</strong> SSP5-8.5 (High
