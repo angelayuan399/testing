@@ -3,6 +3,7 @@ import { createDecadalComparisonChart } from "./js/chart-decal-comparison.js";
 import { createTemperatureMap, updateMap } from "./js/chart-temp-map.js";
 import { createTimeSeriesChart } from "./js/chart-time-series.js";
 import { createRegionalHeatmap } from './js/chart-regional-heatmap.js';
+import { createScenarioComparison } from './js/chart-scenario-comparison.js';
 import { createLegend } from "./js/helper.js";
 
 // Configuration for extreme heat days chart
@@ -219,10 +220,21 @@ document.addEventListener('DOMContentLoaded', () => {
         // Filter data for the high-emissions scenario
         const ssp585_data = data.filter(d => d.scenario === 'ssp585');
 
+        const [minTemp, maxTemp] = d3.extent(ssp585_data, d => d.july_temp_c);
+        const tempColorScale = d3.scaleSequential(d3.interpolateInferno)
+            .domain([minTemp, maxTemp]);
+
+        // --- NEW: Prepare data for Dumbbell Plot ---
+        const dumbbell_data = data.filter(d =>
+            d.year === 2100 &&
+            (d.scenario === 'ssp245' || d.scenario === 'ssp585')
+        );
+
         // --- CALL CHARTS ---
 
         // 1. Call our new, REAL-DATA chart
         createRegionalHeatmap(ssp585_data);
+        createScenarioComparison(dumbbell_data);
 
         // 2. Call the MOCK-DATA charts (for now)
         // We will retrofit these next.

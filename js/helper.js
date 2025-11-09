@@ -1,4 +1,5 @@
 import { config, regions } from "../main.js";
+import { currentYear } from "./chart-temp-map.js";
 
 export function createLegend() {
     const svg = d3.select('#legend-svg');
@@ -58,49 +59,6 @@ export function createLegend() {
 // ===================================================================
 // INTERACTIVITY
 // ===================================================================
-
-let currentYear = 2100;
-let isPlaying = false;
-let playInterval;
-
-// Slider control
-d3.select('#year-slider').on('input', function () {
-    const year = +this.value;
-    updateMap(year);
-});
-
-// Play/Pause animation
-d3.select('#play-button').on('click', function () {
-    if (isPlaying) {
-        stopAnimation();
-    } else {
-        startAnimation();
-    }
-});
-
-function startAnimation() {
-    isPlaying = true;
-    d3.select('#play-button').text('⏸ Pause');
-
-    let year = currentYear;
-    if (year >= 2100) year = 2025;
-
-    playInterval = setInterval(() => {
-        year += 5;
-        if (year > 2100) {
-            year = 2025;
-        }
-
-        d3.select('#year-slider').property('value', year);
-        updateMap(year);
-    }, 500);
-}
-
-function stopAnimation() {
-    isPlaying = false;
-    clearInterval(playInterval);
-    d3.select('#play-button').text('▶ Play Animation');
-}
 
 // Highlight region
 let selectedRegion = null;

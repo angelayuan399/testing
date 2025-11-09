@@ -1,7 +1,7 @@
 import { getTemperature, mapData, config, regions } from "../main.js";
 import { highlightRegion, showTooltip, showRegionTooltip, hideTooltip } from "./helper.js";
 
-let currentYear = 2100;
+export let currentYear = 2100;
 let isPlaying = false;
 let playInterval;
 
