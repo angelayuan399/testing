@@ -1680,6 +1680,146 @@
             }, 1000);
         });
     </script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script>
+    d3.csv("data/cmip6_warming_levels_one_ens_1850_1900.csv").then(function(data) {
+
+        // Remove rows that are comments (start with #)
+        data = data.filter(d => d.model && d.model.substring(0, 1) !== "#");
+
+        // Convert numeric data
+        data.forEach(d => {
+        d.warming_level = +d.warming_level;
+        d.start_year = +d.start_year;
+        d.end_year = +d.end_year;
+        });
+
+        // Example: print the first row
+        console.log(data[0]);
+
+        // Ready to use data for chart!
+        // You can now proceed to call your plot function, e.g.
+        // plotWarmingTimeline(data);
+        // Define plot area
+        const margin = {top: 50, right: 240, bottom: 40, left: 60},
+            width = 900 - margin.left - margin.right,
+            height = 500 - margin.top - margin.bottom;
+
+        // Create SVG element
+        const svg = d3.select("body").append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom);
+
+        const plotArea = svg.append("g")
+            .attr("transform", `translate(${margin.left},${margin.top})`);
+
+        // Extract scenarios and color scale
+        const scenarios = Array.from(new Set(data.map(d => d.exp)));
+        const color = d3.scaleOrdinal().domain(scenarios).range(d3.schemeCategory10);
+
+        // X/Y scales
+        const x = d3.scaleLinear()
+            .domain([d3.min(data, d => d.start_year), d3.max(data, d => d.start_year)])
+            .range([0, width]);
+
+        const y = d3.scaleLinear()
+            .domain([d3.min(data, d => d.warming_level), d3.max(data, d => d.warming_level)])
+            .range([height, 0]);
+
+        // Axes
+        plotArea.append("g")
+            .attr("transform", `translate(0,${height})`)
+            .call(d3.axisBottom(x).tickFormat(d3.format("d")));
+
+        plotArea.append("g")
+            .call(d3.axisLeft(y));
+
+        // Labels
+        plotArea.append("text")
+            .attr("x", width/2)
+            .attr("y", -20)
+            .attr("text-anchor", "middle")
+            .attr("font-size", "18px")
+            .attr("font-weight", "bold")
+            .text("CMIP6 Warming Level Timeline (By Scenario)");
+
+        plotArea.append("text")
+            .attr("x", width/2)
+            .attr("y", height+35)
+            .attr("text-anchor", "middle")
+            .text("Year Level Reached");
+
+        plotArea.append("text")
+            .attr("x", -50)
+            .attr("y", height/2)
+            .attr("transform", `rotate(-90,-50,${height/2})`)
+            .attr("text-anchor", "middle")
+            .text("Warming Level (°C)");
+
+        // Tooltip
+        const tooltip = d3.select("body").append("div")
+            .attr("class", "tooltip")
+            .style("position", "absolute")
+            .style("background", "#fff")
+            .style("border", "1px solid #aaa")
+            .style("padding", "8px")
+            .style("opacity", 0);
+
+        // Draw points
+        plotArea.selectAll("circle")
+            .data(data)
+            .enter()
+            .append("circle")
+            .attr("cx", d => x(d.start_year))
+            .attr("cy", d => y(d.warming_level))
+            .attr("r", 6)
+            .attr("fill", d => color(d.exp))
+            .attr("opacity", 0.7)
+            .on("mouseover", function(event, d) {
+                tooltip.transition().duration(200).style("opacity", 1);
+                tooltip.html(
+                `<strong>Model:</strong> ${d.model}<br/>
+                <strong>Scenario:</strong> ${d.exp}<br/>
+                <strong>Ensemble:</strong> ${d.ensemble}<br/>
+                <strong>Level:</strong> ${d.warming_level}°C<br/>
+                <strong>Years:</strong> ${d.start_year}-${d.end_year}`
+                )
+                .style("left", (event.pageX+15)+"px")
+                .style("top", (event.pageY-20)+"px");
+            })
+            .on("mouseout", function() {
+                tooltip.transition().duration(200).style("opacity", 0);
+            });
+
+        // Legend
+        const legend = svg.append("g")
+            .attr("transform", `translate(${width+margin.left+20},${margin.top})`);
+
+        legend.selectAll("rect")
+            .data(scenarios)
+            .enter()
+            .append("rect")
+            .attr("y", (d,i) => i*22)
+            .attr("width", 18).attr("height", 18)
+            .attr("fill", d => color(d));
+
+        legend.selectAll("text")
+            .data(scenarios)
+            .enter()
+            .append("text")
+            .attr("x", 25)
+            .attr("y", (d,i) => i*22 + 14)
+            .text(d => d);
+
+        legend.append("text")
+            .attr("y", -10)
+            .attr("font-size", "14px")
+            .attr("font-weight", "bold")
+            .text("Scenario");
+            });
+    </script>
+
+    
 </body>
 =======
             <p><strong>Data Source:</strong> CMIP6 Climate Model Projections | <strong>Scenario:</strong> SSP5-8.5 (High
