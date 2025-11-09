@@ -1,4 +1,5 @@
 import { extremeHeatConfig, generateExtremeHeatData, regions } from "../main.js";
+import { positionTooltip } from "./helper.js";
 
 export function createExtremeHeatChart() {
     const container = d3.select('main');

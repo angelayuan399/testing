@@ -139,16 +139,15 @@ export function highlightAllBoundaries(state) {
 
 // Tooltip functions
 // Position tooltip so it doesn't overflow the viewport
-// In helper.js
 export function positionTooltip(event, tooltipSel) {
     const tooltip = tooltipSel || d3.select('#tooltip');
     const node = tooltip.node();
     if (!node) return;
 
-    // By the time this runs (thanks to setTimeout), 
-    // this will be the CORRECT height.
+    // Get rendered dimensions
     const rect = node.getBoundingClientRect();
     
+    // Get cursor and window info
     const pageX = event.pageX;
     const pageY = event.pageY;
     const winW = window.innerWidth;
@@ -160,20 +159,23 @@ export function positionTooltip(event, tooltipSel) {
     let top = pageY + 15;  // Default: below cursor
 
     // Adjust horizontal position
+    // If it goes off the right edge, move it to the left of the cursor
     if (left + rect.width + 12 > scrollX + winW) {
-        left = pageX - rect.width - 20; // Move to left
+        left = pageX - rect.width - 20;
     }
 
     // Adjust vertical position
+    // If it goes off the bottom edge...
     if (top + rect.height + 12 > scrollY + winH) {
-        // It doesn't fit below. Try above.
+        // ...try positioning it *above* the cursor
         const topAbove = pageY - rect.height - 15;
 
+        // If *above* also fails (goes off the top edge)...
         if (topAbove < scrollY + 10) {
-            // It fails both. Pin to top of viewport.
+            // ...then just pin it to the top of the viewport as a last resort
             top = scrollY + 10;
         } else {
-            // It fits above.
+            // Otherwise, *above* is fine
             top = topAbove;
         }
     }
