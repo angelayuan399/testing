@@ -4,6 +4,7 @@ import { createTemperatureMap, updateMap } from "./js/chart-temp-map.js";
 import { createTimeSeriesChart } from "./js/chart-time-series.js";
 import { createRegionalHeatmap } from './js/chart-regional-heatmap.js';
 import { createScenarioComparison } from './js/chart-scenario-comparison.js';
+import { createAnomalyChart } from './js/chart-anomaly-multiple.js';
 import { createLegend } from "./js/helper.js";
 
 // Configuration for extreme heat days chart
@@ -228,6 +229,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         createRegionalHeatmap(ssp585_data);
         createScenarioComparison(dumbbell_data);
+        createAnomalyChart(data);
 
         createTemperatureMap();
         createTimeSeriesChart();
