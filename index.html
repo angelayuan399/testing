@@ -24,44 +24,6 @@
 
         <!-- Main Content -->
         <main>
-            <!-- Temperature Map -->
-            <div class="visualization-container">
-                <div id="map-container">
-                    <svg id="temperature-map"></svg>
-                </div>
-
-                <!-- Time Slider -->
-                <div class="controls">
-                    <div class="slider-container">
-                        <label for="year-slider">
-                            <strong>Year:</strong> <span id="current-year">2100</span>
-                        </label>
-                        <input type="range" id="year-slider" min="2025" max="2100" value="2100" step="5">
-                        <div class="year-labels">
-                            <span>2025</span>
-                            <span>2050</span>
-                            <span>2075</span>
-                            <span>2100</span>
-                        </div>
-                    </div>
-
-                    <button id="play-button" class="play-btn">▶ Play Animation</button>
-                </div>
-
-                <!-- Legend -->
-                <div class="legend">
-                    <h3>Temperature Increase (°C)</h3>
-                    <svg id="legend-svg"></svg>
-                </div>
-            </div>
-
-            <!-- Time Series Chart -->
-            <div class="chart-container">
-                <h2>Regional Temperature Evolution</h2>
-                <p class="chart-subtitle">Click on the map to highlight a region's trajectory</p>
-                <svg id="time-series"></svg>
-            </div>
-
             <div class="chart-container">
                 <h2>Regional Warming Evolution</h2>
                 <p class="chart-subtitle">Projected July average temperature (°C) under SSP5-8.5</p>
@@ -77,24 +39,12 @@
 
             <div class="chart-container">
                 <h2>Projected July Temperature Increase by US Region, 2025-2100</h2>
-                <p class="chart-subtitle">Comparing temperature projections across US regions for two distinct emission scenarios.
+                <p class="chart-subtitle">Comparing temperature projections across US regions for two distinct emission
+                    scenarios.
                 </p>
                 <svg id="anomaly-charts"></svg>
             </div>
         </main>
-
-        <!-- Info Panel -->
-        <aside class="info-panel">
-            <h3>Key Findings</h3>
-            <ul id="findings-list">
-                <li><strong>Southwest Interior:</strong> ~5.5°C increase by 2100</li>
-                <li><strong>Great Plains:</strong> ~5.0°C increase by 2100</li>
-                <li><strong>Pacific Northwest:</strong> ~4.0°C increase by 2100</li>
-                <li><strong>Coastal Regions:</strong> ~3.5°C increase by 2100</li>
-                <li><strong>US Average:</strong> ~4.5°C increase by 2100</li>
-            </ul>
-            <p class="note">Interior regions warm more than coastal areas due to ocean buffering effects.</p>
-        </aside>
 
         <!-- Footer -->
         <footer>
